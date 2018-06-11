@@ -11,11 +11,12 @@ root.title('VNC')
 root.geometry('300x200')
 #Label(root, text = 'VAR1').pack()
 inp = Entry(width=15)   # Ввод для Var2
-alt = [1]
+
+
 inpv = Entry(width=3)   # Ввод для Var1
 inpv.place(x = 140, y = 20)
 
-Label(root, text = 'ws-alt').place(x = 100, y=20)
+Label(root, text = 'name_of_host').place(x = 100, y=20)
 #opt = OptionMenu(root,sv,*alt)
 #opt.place(x = 50, y = 10)
 #sv = StringVar(root)
@@ -24,7 +25,7 @@ def var1():
     def c():
        try:
             q = inpv.get()
-            subprocess.call('ssh -fN -L 5900:localhost:5900 ws-alt-' + q,shell=True)
+            subprocess.call('ssh -fN -L 5900:localhost:5900 name_of_host' + q,shell=True)
             subprocess.call('vncviewer localhost',shell=True)
        finally:
              try:
@@ -57,17 +58,11 @@ buttonping.place(x = 250, y = 25)
 l = Label(width=3)
 l.place(x=270, y=5)
 
-#Label(root, text = '').pack()
-#Label(root, text = 'VAR2').pack()
-
-#Label(root, text='ws-alt').place(x=10,y=90)
 inp.place(x = 50, y = 90)
 
 def var2():
    def c():
     try:
-       global alt
-       alt+=inp.get()
        w = inp.get()
        subprocess.call('ssh -fN -L 5900:localhost:5900 ' + w,shell=True)
        subprocess.call('vncviewer localhost',shell=True)
@@ -101,10 +96,66 @@ button.place(x = 180, y = 20, height=35, width=59)
 q.pack()
 l2 = Label(width=3)
 l2.place(x=270, y=65)
+Label(root, text = 'host').place(x = 95, y=73)
 
 button2 = Button(root, text='Connect',command=var2)
 button2.place(x = 180, y = 80, height=35, width=59)
 
 buttonping2 = Button(root, text='ping', command=ping2)
 buttonping2.place(x = 250, y = 85)
+
+
+
+
+inpv3 = Entry(width=15)   # Ввод для Var1
+inpv3.place(x = 10, y = 140)
+Label(root, text = 'host').place(x = 55, y=120) # host v3
+
+inpv32 = Entry(width=5)
+inpv32.place(x = 150, y = 140)
+Label(root, text = 'port').place(x = 155, y=120) #  port v3
+
+
+def var3():
+   def c():
+    try:
+       host = inpv3.get()
+       port = inpv32.get()
+       subprocess.call('ssh -fN -L '+port':localhost:5900 '+ host, shell=True)
+       subprocess.call('vncviewer localhost',shell=True)
+    finally:
+        try:
+             q = subprocess.check_output('ps ax | grep '+port+' |grep -v grep|awk \'{print $1}\'',shell=True)
+             r = str(q)
+             r = r[2:-3]
+             if r and int(r):
+                      subprocess.call('kill -9 ' + r,shell=True)
+        except subprocess.CalledProcessError:
+             print('BAD')
+   Thread(target=c).start()
+
+l3 = Label(width=3)
+l3.place(x=270, y=115)
+
+
+def ping3():
+     w = inpv3.get()
+     try:
+         a = subprocess.check_output('ping -c 1 ' + w, shell=True)
+         print('OK')
+         l3['text'] = 'OK'
+         l3['bg'] = 'green'
+     except subprocess.CalledProcessError:
+         print('BAD')
+         l3['text'] = 'BAD'
+         l3['bg'] = 'red'
+
+
+button3 = Button(root, text='Connect',command=var3)
+button3.place(x = 193, y = 133, height=30, width=55)
+
+buttonping3 = Button(root, text='ping', command=ping3)
+buttonping3.place(x = 250, y = 133)
+
+
 root.mainloop()
