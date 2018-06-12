@@ -7,16 +7,25 @@ import re
 root = Tk()
 q = Frame()
 
+
+
+
+def mes():
+          messagebox.showinfo('info','Вы можете подключиться к серверу vnc тремя способами:\n1.Добавить номер хоста\n2.Указать ip адрес хоста или символьное имя полностью\n3.Указать адрес(имя) хоста, порт, на который будет проброшен ssh тунель')
+butmes = Button(root, text='info',command=mes)
+butmes.place(x = 5, y = 5)
+
+
 root.title('VNC')
 root.geometry('300x200')
 #Label(root, text = 'VAR1').pack()
 inp = Entry(width=15)   # Ввод для Var2
-
+,
 
 inpv = Entry(width=3)   # Ввод для Var1
-inpv.place(x = 140, y = 20)
+Ljinpv.place(x = 140, y = 20)
 
-Label(root, text = 'name_of_host').place(x = 100, y=20)
+Label(root, text = 'ws-alt').place(x = 100, y=20)
 #opt = OptionMenu(root,sv,*alt)
 #opt.place(x = 50, y = 10)
 #sv = StringVar(root)
@@ -25,7 +34,7 @@ def var1():
     def c():
        try:
             q = inpv.get()
-            subprocess.call('ssh -fN -L 5900:localhost:5900 name_of_host' + q,shell=True)
+            subprocess.call('ssh -fN -L 5900:localhost:5900 ws-alt-' + q,shell=True)
             subprocess.call('vncviewer localhost',shell=True)
        finally:
              try:
@@ -121,7 +130,7 @@ def var3():
     try:
        host = inpv3.get()
        port = inpv32.get()
-       subprocess.call('ssh -fN -L '+port':localhost:5900 '+ host, shell=True)
+       subprocess.call('ssh -fN -L '+port+':localhost:5900 '+ host, shell=True)
        subprocess.call('vncviewer localhost',shell=True)
     finally:
         try:
