@@ -1,1 +1,1 @@
-# GUI for TigerVNC(for SSH tunnels)
+# Python(tkinter) script to simplify port forwarding process before connecting to VNC server(TigerVNC)
