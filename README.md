@@ -1,1 +1,1 @@
-# GUI for TigerVNC(in order not to make the port forwarding)
+# GUI for TigerVNC(for SSH tunnels)
